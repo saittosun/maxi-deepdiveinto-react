@@ -1,11 +1,28 @@
 // jshint esversion: 9
-import React from "react";
+import React, { useEffect } from "react";
 import classes from "./Cockpit.module.css";
 
-const cockpit = (props) => {
+const Cockpit = (props) => {
+  useEffect(() => {
+    console.log('[Cockpit.js] useEffect');
+    // fake http request...
+    setTimeout(() => {
+      alert('saved data')
+    }, 1000);
+    return () => {
+      console.log('[Cockpit.js] cleanup work in useEffect');
+    }
+  }, []);
+
+  useEffect(() => {
+    console.log('[Cockpit.js] second useEffect');
+    return () => {
+      console.log('[Cockpit.js] cleanup work in second useEffect');
+    }
+  })
   let btnClass = "";
-  if(props.showPersons) {
-   btnClass = classes.Red;
+  if (props.showPersons) {
+    btnClass = classes.Red;
   }
 
   const assignedClasses = [];
@@ -27,4 +44,4 @@ const cockpit = (props) => {
   );
 };
 
-export default cockpit;
+export default Cockpit;
