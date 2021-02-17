@@ -26,10 +26,10 @@ const Cockpit = (props) => {
   }
 
   const assignedClasses = [];
-  if (props.persons.length <= 2) {
+  if (props.personsLength <= 2) {
     assignedClasses.push(classes.red); // classes = ['red']
   }
-  if (props.persons.length <= 1) {
+  if (props.personsLength <= 1) {
     assignedClasses.push(classes.bold); // classes = ['red', 'bold']
   }
 
@@ -44,4 +44,5 @@ const Cockpit = (props) => {
   );
 };
 
-export default Cockpit;
+//React.memo() does a shallow comparison on its props meaning that it compares if the reference of the persons array is different from the previous reference. The thing is, whenever we trigger nameChangedHandler, it creates a new reference for the persons array which means the Cockpit component will be re-rendered. In order to avoid that, we pass in the length only instead of the entire persons array and now React.memo() can just check if the length has changed
+export default React.memo(Cockpit);
