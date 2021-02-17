@@ -1,33 +1,41 @@
-// jshint esversion: 9
-import React, { useEffect, useRef } from "react";
-import classes from "./Cockpit.module.css";
+import React, { useEffect, useRef, useContext } from 'react';
 
-const Cockpit = (props) => {
-  const toggleButtonRef = useRef(null)
+import classes from './Cockpit.css';
+import AuthContext from '../../context/auth-context';
+
+const Cockpit = props => {
+  const toggleBtnRef = useRef(null);
+  const authContext = useContext(AuthContext);
+
+  console.log(authContext.authenticated);
+
   useEffect(() => {
     console.log('[Cockpit.js] useEffect');
-    // fake http request...
+    // Http request...
     // setTimeout(() => {
-    //   alert('saved data')
+    //   alert('Saved data to cloud!');
     // }, 1000);
-    toggleButtonRef.current.click()
+    toggleBtnRef.current.click();
     return () => {
       console.log('[Cockpit.js] cleanup work in useEffect');
-    }
+    };
   }, []);
 
   useEffect(() => {
-    console.log('[Cockpit.js] second useEffect');
+    console.log('[Cockpit.js] 2nd useEffect');
     return () => {
-      console.log('[Cockpit.js] cleanup work in second useEffect');
-    }
-  })
-  let btnClass = "";
+      console.log('[Cockpit.js] cleanup work in 2nd useEffect');
+    };
+  });
+
+  // useEffect();
+
+  const assignedClasses = [];
+  let btnClass = '';
   if (props.showPersons) {
     btnClass = classes.Red;
   }
 
-  const assignedClasses = [];
   if (props.personsLength <= 2) {
     assignedClasses.push(classes.red); // classes = ['red']
   }
@@ -37,14 +45,14 @@ const Cockpit = (props) => {
 
   return (
     <div className={classes.Cockpit}>
-      <h1>Hi, I'm a React App</h1>
-      <p className={assignedClasses.join(" ")}>This is really working!</p>
-      <button ref={toggleButtonRef} className={btnClass} onClick={props.clicked}>
+      <h1>{props.title}</h1>
+      <p className={assignedClasses.join(' ')}>This is really working!</p>
+      <button ref={toggleBtnRef} className={btnClass} onClick={props.clicked}>
         Toggle Persons
       </button>
+      <button onClick={authContext.login}>Log in</button>
     </div>
   );
 };
 
-//React.memo() does a shallow comparison on its props meaning that it compares if the reference of the persons array is different from the previous reference. The thing is, whenever we trigger nameChangedHandler, it creates a new reference for the persons array which means the Cockpit component will be re-rendered. In order to avoid that, we pass in the length only instead of the entire persons array and now React.memo() can just check if the length has changed
 export default React.memo(Cockpit);
